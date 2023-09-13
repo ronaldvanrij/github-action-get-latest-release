@@ -32,9 +32,8 @@ async function run() {
             releases = releases.filter(x => x.draft != true);
         }
         
-        console.log(releases);
-        
         if (releases.length) {
+            console.log(`Using tag ${releases[0].tag_name}`);
             core.setOutput('release', releases[0].tag_name);
             core.setOutput('id', String(releases[0].id));
             core.setOutput('description', String(releases[0].body));
