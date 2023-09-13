@@ -6,6 +6,7 @@ const token = core.getInput('token');
 var owner = core.getInput('owner');
 var repo = core.getInput('repo');
 var excludes = core.getInput('excludes').trim().split(",");
+var ignore = core.getInput('ignore').trim();
 
 const octokit = (() => {
   if (token) {
@@ -31,7 +32,10 @@ async function run() {
         if (excludes.includes('draft')) {
             releases = releases.filter(x => x.draft != true);
         }
-        
+        if (ignore != "") {
+            releases = releases.filter(x => x.id != ignore);
+        }
+                
         if (releases.length) {
             console.log(`Using tag ${releases[0].tag_name}`);
             core.setOutput('release', releases[0].tag_name);
